@@ -13,6 +13,16 @@ cache = SimpleCache()
 _SECRET_PROP_OSLOBYSYKKEL_API_TOKEN = 'oslobysykkel_api_token'
 
 
+def read_secrets_file():
+    with open('secrets.yaml') as f:
+        content = yaml.load(f)
+    assert _SECRET_PROP_OSLOBYSYKKEL_API_TOKEN in content
+    return content
+
+
+secrets = read_secrets_file()
+
+
 def get_from_cache(key, function, cache_timeout=10):
     if cache.has(key):
         return cache.get(key)
@@ -20,13 +30,6 @@ def get_from_cache(key, function, cache_timeout=10):
         content = function()
         cache.set(key, content, timeout=cache_timeout)
         return content
-
-
-def read_secrets_file():
-    with open('secrets.yaml') as f:
-        content = yaml.load(f)
-    assert _SECRET_PROP_OSLOBYSYKKEL_API_TOKEN in content
-    return content
 
 
 def dict_to_response_with_cors(data):
@@ -60,6 +63,5 @@ def kantinemeny():
 
 
 if __name__ == '__main__':
-    secrets = read_secrets_file()
     # app.debug = True
     app.run(port=8000)
