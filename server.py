@@ -62,4 +62,4 @@ def kantinemeny():
 if __name__ == '__main__':
     secrets = read_secrets_file()
     # app.debug = True
-    app.run()
+    app.run(port=8000)
